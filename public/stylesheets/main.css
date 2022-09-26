@@ -1,0 +1,5 @@
+@import 'shared/message.css';
+
+.message-container {
+  width: 20%;
+}

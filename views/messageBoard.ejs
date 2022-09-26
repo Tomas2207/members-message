@@ -1,0 +1,25 @@
+<div id="message-container">
+  <% messages.forEach((message)=>{%> <% if(locals.currentUser){ %> <%
+  if(currentUser.id === message.author.id){ %>
+  <div class="message">
+    <div class="message-user"><%=message.text %></div>
+    <div><%=message.author.name %></div>
+  </div>
+  <% } %> <% }else{ %>
+  <div class="other">
+    <div class="message-another"><%=message.text %></div>
+    <div><%=message.author.name %></div>
+  </div>
+  <%} %> <% }) %>
+
+  <div className="message-input">
+    <form action="/" method="POST">
+      <input type="text" name="message" id="" />
+      <% if(locals.currentUser){ %>
+      <input type="hidden" name="author" id="" value="<%=currentUser.id %> " />
+      <% } %>
+
+      <button type="submit">Send</button>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+<% if(user) {%>
+<h2><%=currentUser.name%></h2>
+<a href="log-in/log-out">Log out</a>
+<% } else {%>
+<h2>Log In</h2>
+<form action="/log-in" method="POST">
+  <label for="username">Username:</label>
+  <input type="text" name="username" id="" />
+  <label for="password">Password:</label>
+  <input type="password" name="password" id="" />
+  <button type="submit">Sign Up</button>
+</form>
+
+<% } %>

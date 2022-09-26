@@ -1,0 +1,4 @@
+<h1>Welcome</h1>
+<% if(locals.currentUser){ %>
+<h2><%=locals.currentUser.name %></h2>
+<% } %> <%-include('messageBoard', {messages: messages}) %>
