@@ -5,6 +5,24 @@ const userSchema = mongoose.Schema({
   lastName: { type: String, required: true },
   username: { type: String, required: true },
   password: { type: String, required: true },
+  friends: [
+    {
+      user: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'User',
+      },
+    },
+  ],
+  chatrooms: [
+    {
+      chatroom: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'Chatroom',
+      },
+    },
+  ],
 });
 
 module.exports = mongoose.model('User', userSchema);

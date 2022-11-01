@@ -1,25 +1,37 @@
 <div id="message-container">
   <% messages.forEach((message)=>{%> <% if(locals.currentUser){ %> <%
-  if(currentUser.id === message.author.id){ %>
+  if(locals.currentUser.id === message.author.id){ %>
   <div class="message">
     <div class="message-user"><%=message.text %></div>
-    <div><%=message.author.name %></div>
+    <div class="message-info">You</div>
+    <div class="message-info"><%=message.time%></div>
   </div>
-  <% } %> <% }else{ %>
+  <% }else{%>
   <div class="other">
     <div class="message-another"><%=message.text %></div>
-    <div><%=message.author.name %></div>
+    <div class="message-info"><%=message.author.name %></div>
+    <div class="message-info"><%=message.time%></div>
+  </div>
+  <%}%> <% }else{ %>
+  <div class="other">
+    <div class="message-another"><%=message.text %></div>
+    <div class="message-info"><%=message.author.name %></div>
+    <div class="message-info"><%=message.time%></div>
   </div>
   <%} %> <% }) %>
+</div>
+<div className="message-input">
+  <%if(locals.currentUser){%>
+  <form action="/" method="POST">
+    <input type="text" name="message" id="" />
+    <% if(locals.currentUser){ %>
+    <input type="hidden" name="author" id="" value="<%=currentUser.id%>" />
+    <input type="hidden" name="guest" id="" value="<%=guest.id%>" />
+    <% } %>
 
-  <div className="message-input">
-    <form action="/" method="POST">
-      <input type="text" name="message" id="" />
-      <% if(locals.currentUser){ %>
-      <input type="hidden" name="author" id="" value="<%=currentUser.id %> " />
-      <% } %>
-
-      <button type="submit">Send</button>
-    </form>
-  </div>
+    <button type="submit" id="submit-btn">Send</button>
+  </form>
+  <%}else{%>
+  <div>Log in to send a message</div>
+  <%}%>
 </div>

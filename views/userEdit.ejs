@@ -1,0 +1,15 @@
+<h1>Profile</h1>
+<!-- <div><%=locals.currentUser.name %>  <%=locals.currentUser.lastName %></div> -->
+<img class="profile-img" src="/images/user.png" alt="" />
+<div>Username: <%=locals.currentUser.username %></div>
+<form
+  class="edit-form"
+  action="/profile/<%=user.id %>?_method=PUT"
+  method="POST"
+>
+  <label for="name">name:</label>
+  <input type="text" name="name" id="" value="<%=user.name %> " />
+  <label for="lastname">Lastname:</label>
+  <input type="text" name="lastname" id="" value="<%=user.lastName %> " />
+  <button type="submit">Update</button>
+</form>

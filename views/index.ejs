@@ -1,4 +1,19 @@
 <h1>Welcome</h1>
 <% if(locals.currentUser){ %>
-<h2><%=locals.currentUser.name %></h2>
-<% } %> <%-include('messageBoard', {messages: messages}) %>
+<h2>
+  <a href="/profile/<%=locals.currentUser.id %> "
+    ><%=locals.currentUser.name %></a
+  >
+</h2>
+<div id="chatroom-container">
+  <h2>Chatrooms</h2>
+  <% chatrooms.forEach(chatroom=>{ %>
+  <a href="/chatroom/<%=chatroom.guest.id%>">
+    <div class="chatroom"><%=chatroom.guest.name %></div>
+  </a>
+  <% }) %> <% }else{ %>
+  <div id="chatroom-container">
+    <h2>Log in to view chatroooms</h2>
+  </div>
+  <% } %>
+</div>

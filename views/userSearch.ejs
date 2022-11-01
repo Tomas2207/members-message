@@ -1,0 +1,18 @@
+<h2>Search User</h2>
+<form action="/profile/search" method="GET" class="form">
+  <label for="username">Username:</label>
+  <input type="text" name="username" />
+  <button type="submit">Search</button>
+</form>
+
+<% if(users){ %> <%users.forEach(user => { %>
+<div class="friend-list"><%=user.username %></div>
+<form
+  action="/profile/search/<%=locals.currentUser.id %>?_method=PUT"
+  method="POST"
+>
+  <input type="hidden" name="author" id="" value="<%=user.id%>" />
+  <button type="submit">Add friend</button>
+</form>
+
+<% } )%> <% } %>

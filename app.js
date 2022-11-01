@@ -11,10 +11,12 @@ const LocalStrategy = require('passport-local');
 
 const app = express();
 const expressLayouts = require('express-ejs-layouts');
+const methodOverride = require('method-override');
 const indexRouter = require('./routes/index');
 const signUpRouter = require('./routes/signUp');
 const logInRouter = require('./routes/logIn');
 const messageRouter = require('./routes/message');
+const profileRouter = require('./routes/profile');
 
 const User = require('./models/users');
 
@@ -22,13 +24,29 @@ app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 app.set('layout', 'layouts/layout');
 app.use(expressLayouts);
+app.use(methodOverride('_method'));
 app.use(express.static('public'));
 app.use(express.urlencoded({ limit: '10mb', extended: false }));
+
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
+
+io.on('connection', function (socket) {
+  socket.on('UpdateOnDatabase', function (msg) {
+    socket.broadcast.emit('RefreshPage');
+  });
+});
+
+const server = http.listen(process.env.PORT || 3000, () => {
+  const { port } = server.address();
+  console.log(`listening on port ${port}`);
+});
 
 app.use(session({ secret: 'cats', resave: false, saveUninitialized: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.urlencoded({ extended: false }));
+app.set('socketio', io);
 
 const mongoose = require('mongoose');
 const mongoDb = process.env.DATABASE_URL;
@@ -50,14 +68,12 @@ passport.use(
       }
       bcrypt.compare(password, user.password, (err, res) => {
         if (res) {
-          console.log('wrong');
           return done(null, user);
         } else {
-          console.log('wrong else compare');
+          console.log('incorrect password');
           return done(null, false, { message: 'Incorrect password' });
         }
       });
-      console.log('wrong out');
     });
   })
 );
@@ -85,7 +101,7 @@ app.post(
   })
 );
 
-app.get('/log-out', (req, res, next) => {
+app.get('/log-in/log-out', (req, res, next) => {
   {
     req.logout(function (err) {
       if (err) {
@@ -104,4 +120,4 @@ app.use('/log-in', logInRouter);
 
 app.use('/message', messageRouter);
 
-app.listen(process.env.PORT || 3000);
+app.use('/profile', profileRouter);
