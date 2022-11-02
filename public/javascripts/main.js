@@ -1,4 +1,4 @@
-const socket = io.connect('https://members-message.herokuapp.com');
+const socket = io.connect('http://localhost:3000');
 socket.on('RefreshPage', function (data) {
   location.reload();
 });

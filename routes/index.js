@@ -67,13 +67,13 @@ router.post('/', async (req, res) => {
   res.redirect('/chatroom/' + req.body.guest);
 });
 
-router.get('/chatroom/:id', async (req, res) => {
+router.get('/chatroom/:id', async function (req, res) {
   let chatroom;
   let messages = [];
 
   try {
     chatroom = await Chatroom.find({
-      guest: req.params.id,
+      $and: [{ guest: req.params.id }, { host: res.locals.currentUser }],
     })
       .populate('host')
       .populate('guest')
@@ -100,9 +100,10 @@ router.get('/chatroom/:id', async (req, res) => {
       .exec();
   } catch (error) {
     messages = [];
-    console.log(error);
+    // console.log(error);
   }
-  console.log('chatroom', messages);
+  console.log(chatroom[0].host);
+  console.log('messages', messages);
 
   res.render('chatroom', { chatroom, messages });
 });
