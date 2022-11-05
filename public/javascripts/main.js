@@ -4,7 +4,7 @@ function updateDiv() {
   });
 }
 
-const socket = io.connect('http://localhost:3000');
+const socket = io.connect('https://members-message.herokuapp.com/');
 socket.on('RefreshPage', function (data) {
   // location.reload();
   updateDiv();
