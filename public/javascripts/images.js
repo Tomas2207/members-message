@@ -7,7 +7,7 @@ let observer = new IntersectionObserver((entries, observer) => {
     const image = entry.target;
     const newURL = image.getAttribute('data-src');
     image.src = newURL;
-    observer.unobserve(image);
+    // observer.unobserve(image);
   });
 }, imageOptions);
 

@@ -1,13 +1,13 @@
-function updateDiv() {
-  $('#updateDiv').load(window.location.href + ' #updateDiv', () => {
-    console.log('updated');
-  });
-}
+// function updateDiv() {
+//   $('#updateDiv').load(window.location.href + ' #updateDiv', () => {
+//     console.log('updated');
+//   });
+// }
 
 const socket = io.connect('https://members-message.herokuapp.com/');
 socket.on('RefreshPage', function (data) {
-  // location.reload();
-  updateDiv();
+  location.reload();
+  // updateDiv();
 });
 
 const submitBtn = document.getElementById('submit-btn');
