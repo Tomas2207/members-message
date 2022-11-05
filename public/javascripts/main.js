@@ -4,7 +4,7 @@
 //   });
 // }
 
-const socket = io.connect('https://members-message.herokuapp.com/');
+const socket = io.connect('https://members-message.herokuapp.com');
 socket.on('RefreshPage', function (data) {
   location.reload();
   // updateDiv();
