@@ -4,8 +4,11 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
 * {
-  font-family: 'Ubuntu', sans-serif;
+  /* font-family: 'Ubuntu', sans-serif; */
+  font-family: 'Poppins', sans-serif;
 }
 
 body {
@@ -33,13 +36,70 @@ a {
   font-weight: bold;
 }
 
+.log-a {
+  color: rgba(199, 118, 175, 0.767);
+  border-bottom: 1px solid rgb(41, 39, 39);
+  transition: 0.3s;
+}
+
+.log-a:hover {
+  border-bottom: 1px solid rgba(199, 118, 175, 0.767);
+}
+
+nav {
+  display: flex;
+  gap: 12px;
+  font-size: 1.2em;
+  margin-bottom: 10px;
+}
+
+nav > a {
+  padding: 10px 5px;
+  border-radius: 5px;
+}
+
+nav > a:hover {
+  background-color: rgb(131, 38, 103);
+  transition: 0.5s;
+}
+
 .form {
   display: flex;
   flex-direction: column;
   max-width: 290px;
-  background-color: rgb(41, 39, 39);
+  background-color: rgba(41, 39, 39, 0.952);
   padding: 50px 25px;
   border-radius: 5px;
+  position: relative;
+}
+
+.form::before {
+  content: '';
+  position: absolute;
+  background-color: rgba(131, 38, 103, 0.979);
+  inset: 0;
+  transform: rotate(-3deg);
+  z-index: -1;
+}
+
+.form > input,
+.image-label > input {
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  /* height: 35px; */
+  background-color: rgba(199, 118, 175, 0.767);
+  color: white;
+  padding: 0.5rem 1.5rem;
+  margin-bottom: 15px;
+}
+
+/* .form > label {
+  display: none;
+} */
+
+.form > input::placeholder {
+  color: white;
 }
 
 input {

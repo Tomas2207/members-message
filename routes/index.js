@@ -3,6 +3,8 @@ const router = express.Router();
 const Message = require('../models/message');
 const Chatroom = require('../models/chatroom');
 const Profile = require('../models/users');
+const cloudinary = require('../utils/cloudinary');
+const upload = require('../utils/multer');
 
 router.use(function (req, res, next) {
   res.locals.currentUser = req.user;
@@ -10,16 +12,10 @@ router.use(function (req, res, next) {
 });
 
 router.get('/', async (req, res) => {
-  // let messages = [];
-  // try {
-  //   messages = await Message.find().populate('author').exec();
-  // } catch {
-  //   messages = [];
-  // }
+  const io = req.app.get('io');
 
-  // res.render('index', { messages });
   let chatrooms = [];
-  let user;
+  let messages = [];
 
   try {
     if (res.locals.currentUser) {
@@ -28,17 +24,20 @@ router.get('/', async (req, res) => {
       })
         .populate('host')
         .populate('guest')
+        .populate('messages.message')
+
         .exec();
     }
   } catch (err) {
     console.log(err);
   }
 
+  // console.log(chatrooms);
+
   res.render('index', { chatrooms });
 });
 
 router.post('/', async (req, res) => {
-  const io = req.app.get('socketio');
   let date = new Date();
   date = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
@@ -48,6 +47,7 @@ router.post('/', async (req, res) => {
     author: user.id,
     destiny: req.body.guest,
     time: date,
+    isImage: false,
   });
   try {
     const newMessage = await message.save();
@@ -56,7 +56,7 @@ router.post('/', async (req, res) => {
       { host: req.body.author },
       { $push: { messages: { message: newMessage.id } } }
     );
-    console.log('profile', profile);
+    // console.log('profile', profile);
     await Profile.findOneAndUpdate(
       { host: req.body.guest },
       { $push: { messages: { message: newMessage.id } } }
@@ -64,6 +64,48 @@ router.post('/', async (req, res) => {
   } catch (err) {
     console.log('chatroom error', err);
   }
+
+  res.redirect('/chatroom/' + req.body.guest);
+});
+
+router.post('/message', upload.single('image'), async (req, res) => {
+  const io = req.app.get('io');
+  let date = new Date();
+  date = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  const user = await Profile.findById(res.locals.currentUser.id)
+    .populate('friends.user')
+    .exec();
+
+  // console.log('friends', user.friends);
+
+  try {
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      folder: 'members-message',
+    });
+
+    const message = new Message({
+      text: result.secure_url,
+      author: user.id,
+      destiny: req.body.guest,
+      time: date,
+      isImage: true,
+    });
+
+    const newMessage = await message.save();
+
+    const profile = await Chatroom.findOneAndUpdate(
+      { host: req.body.author },
+      { $push: { messages: { message: newMessage.id } } }
+    );
+    // console.log('profile', profile);
+    await Profile.findOneAndUpdate(
+      { host: req.body.guest },
+      { $push: { messages: { message: newMessage.id } } }
+    );
+  } catch (error) {
+    console.log(error);
+  }
+
   res.redirect('/chatroom/' + req.body.guest);
 });
 
@@ -98,41 +140,50 @@ router.get('/chatroom/:id', async function (req, res) {
     })
       .populate('author')
       .exec();
+
+    messages = messages.reverse();
   } catch (error) {
     messages = [];
-    // console.log(error);
+    console.log(error);
   }
-  console.log(chatroom[0].host);
-  console.log('messages', messages);
+
+  // console.log('messages', messages);
 
   res.render('chatroom', { chatroom, messages });
 });
 
 router.put('/chatroom/:id', async (req, res) => {
-  const chatroom = new Chatroom({
-    host: req.body.host,
-    guest: req.body.guest,
+  const chatroomFind = await Chatroom.find({
+    $and: [{ guest: req.body.guest }, { host: req.body.host }],
   });
-  const guestChatroom = new Chatroom({
-    host: req.body.guest,
-    guest: req.body.host,
-  });
-  try {
-    const newChatroom = await chatroom.save();
-    const newGuestroom = await guestChatroom.save();
-    const user = await Profile.findById(req.params.id);
-    await Profile.findOneAndUpdate(
-      { _id: req.params.id },
-      { $push: { chatrooms: { chatroom: newChatroom.id } } }
-    );
-    await Profile.findOneAndUpdate(
-      { _id: req.body.guest },
-      { $push: { chatrooms: { chatroom: newGuestroom.id } } }
-    );
+  if (chatroomFind.length > 0) {
     res.redirect('/');
-  } catch (error) {
-    console.log(error);
-    res.redirect('/');
+  } else {
+    const chatroom = new Chatroom({
+      host: req.body.host,
+      guest: req.body.guest,
+    });
+    const guestChatroom = new Chatroom({
+      host: req.body.guest,
+      guest: req.body.host,
+    });
+    try {
+      const newChatroom = await chatroom.save();
+      const newGuestroom = await guestChatroom.save();
+      const user = await Profile.findById(req.params.id);
+      await Profile.findOneAndUpdate(
+        { _id: req.params.id },
+        { $push: { chatrooms: { chatroom: newChatroom.id } } }
+      );
+      await Profile.findOneAndUpdate(
+        { _id: req.body.guest },
+        { $push: { chatrooms: { chatroom: newGuestroom.id } } }
+      );
+      res.redirect('/');
+    } catch (error) {
+      console.log(error);
+      res.redirect('/');
+    }
   }
 });
 

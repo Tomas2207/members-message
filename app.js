@@ -19,6 +19,7 @@ const messageRouter = require('./routes/message');
 const profileRouter = require('./routes/profile');
 
 const User = require('./models/users');
+const Chatroom = require('./models/chatroom');
 
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
@@ -31,7 +32,13 @@ app.use(express.urlencoded({ limit: '10mb', extended: false }));
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
+app.set('io', io);
+
 io.on('connection', function (socket) {
+  Chatroom.watch().on('change', (change) => {
+    socket.broadcast.emit('RefreshPage');
+  });
+
   socket.on('UpdateOnDatabase', function (msg) {
     socket.broadcast.emit('RefreshPage');
   });

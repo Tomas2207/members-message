@@ -1,19 +1,27 @@
+<!-- prettier-ignore -->
+<% if(!locals.currentUser){ %>
 <h1>Welcome</h1>
-<% if(locals.currentUser){ %>
-<h2>
-  <a href="/profile/<%=locals.currentUser.id %> "
-    ><%=locals.currentUser.name %></a
-  >
-</h2>
+<% } %> <% if(locals.currentUser){ %>
+<a href="/profile/<%=locals.currentUser.id %> ">
+  <div class="index-profile">
+    <img class="index-img" src="<%=locals.currentUser.image%>" alt="" />
+    <h2 class="current-user"><%=locals.currentUser.name %></h2>
+  </div>
+</a>
 <div id="chatroom-container">
   <h2>Chatrooms</h2>
   <% chatrooms.forEach(chatroom=>{ %>
-  <a href="/chatroom/<%=chatroom.guest.id%>">
-    <div class="chatroom"><%=chatroom.guest.name %></div>
-  </a>
-  <% }) %> <% }else{ %>
+    <a href="/chatroom/<%=chatroom.guest.id%>">
+      <div class="chatroom">
+        <div class="img-chatroom"><img src="<%=chatroom.guest.image%>" alt=""></div>
+        
+        <div><%=chatroom.guest.name %></div>
+      </div>
+    </a>
+     <% }) %> 
+  <% }else{ %>
   <div id="chatroom-container">
-    <h2>Log in to view chatroooms</h2>
+    <h2><a class="log-a" href="/sign-up">Sign Up</a> or <a class="log-a" href="/log-in">Log In</a> to view chatroooms</h2>
   </div>
   <% } %>
 </div>

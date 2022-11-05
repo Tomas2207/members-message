@@ -1,12 +1,19 @@
 <h1>Profile</h1>
 <!-- <div><%=locals.currentUser.name %>  <%=locals.currentUser.lastName %></div> -->
-<img class="profile-img" src="/images/user.png" alt="" />
+
 <div>Username: <%=locals.currentUser.username %></div>
 <form
-  class="edit-form"
+  class="form"
   action="/profile/<%=user.id %>?_method=PUT"
-  method="POST"
+  method="POST" enctype="multipart/form-data"
 >
+  <label class="image-label" for="image">
+    <input type="file" name="image" id="image" class="img-upload">
+    <div class="img-upload-user">
+      <img src="<%=user.image%>" alt="" />
+    </div>
+    
+  </label>
   <label for="name">name:</label>
   <input type="text" name="name" id="" value="<%=user.name %> " />
   <label for="lastname">Lastname:</label>

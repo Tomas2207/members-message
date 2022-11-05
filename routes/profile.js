@@ -1,8 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const Profile = require('../models/users');
+const cloudinary = require('../utils/cloudinary');
+const upload = require('../utils/multer');
 
 router.get('/search', async (req, res) => {
+  let filter = [];
+  let exists = false;
+  let profile = await Profile.findById(res.locals.currentUser.id)
+    .populate('friends.user')
+    .exec();
+  // console.log('found it', profile.friends);
   let query = Profile.find();
   if (req.query.username != null && req.query.username != '') {
     query = query.regex('username', new RegExp(req.query.username, 'i'));
@@ -13,7 +21,17 @@ router.get('/search', async (req, res) => {
     if (req.query.username == null || req.query.username == '') {
       users = [];
     }
-    res.render('userSearch', { users });
+    // console.log('users', users);
+    users.forEach((user) => {
+      if (profile.friends.filter((e) => e.user.name === user.name).length > 0) {
+        const index = users.indexOf(user);
+        if (index > -1) {
+          users.splice(index, 1);
+        }
+      }
+    });
+
+    res.render('userSearch', { users, profile });
   } catch (error) {
     console.log(error);
     res.redirect('/');
@@ -23,7 +41,7 @@ router.get('/search', async (req, res) => {
 router.get('/edit/:id', async (req, res) => {
   try {
     const user = await Profile.findById(req.params.id);
-    console.log('user', user.name);
+
     res.render('userEdit', { user });
   } catch {
     res.redirect('/');
@@ -31,32 +49,51 @@ router.get('/edit/:id', async (req, res) => {
 });
 
 router.put('/search/:id', async (req, res) => {
-  console.log(req.params.id);
+  // console.log(req.params.id);
+  let user;
   try {
-    const user = await Profile.findById(req.params.id)
+    user = await Profile.findById(req.params.id)
       .populate('friends.user')
       .exec();
     await Profile.findOneAndUpdate(
       { _id: req.params.id },
       { $push: { friends: { user: req.body.author } } }
     );
-    res.render('userProfile', { user });
+    await Profile.findOneAndUpdate(
+      { _id: req.body.author },
+      { $push: { friends: { user: req.params.id } } }
+    );
+    // res.render('userProfile', { user });
   } catch (error) {
     console.log(error);
     res.redirect('/');
   }
+  res.redirect('/profile/' + req.params.id);
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', upload.single('image'), async (req, res) => {
+  let result = '';
   let user;
+
+  if (req.file) {
+    result = await cloudinary.uploader.upload(req.file.path, {
+      folder: 'members-message',
+    });
+  }
 
   try {
     user = await Profile.findById(req.params.id);
     user.name = req.body.name;
     user.lastName = req.body.lastname;
+    if (result !== '' && result !== null) {
+      user.image = result.secure_url;
+    } else {
+      user.image = user.image;
+    }
     await user.save();
     res.redirect('/');
-  } catch {
+  } catch (err) {
+    console.log(err);
     res.redirect('/');
   }
 });
@@ -65,6 +102,8 @@ router.get('/:id', async (req, res) => {
   const user = await Profile.findById(req.params.id)
     .populate('friends.user')
     .exec();
+
+  // console.log('friends', user.friends);
   res.render('userProfile', { user });
 });
 

@@ -9,6 +9,7 @@ const messageSchema = mongoose.Schema({
     ref: 'User',
   },
   time: { type: String, required: true },
+  isImage: { type: Boolean, required: true },
 });
 
 module.exports = mongoose.model('Message', messageSchema);

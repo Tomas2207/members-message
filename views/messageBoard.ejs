@@ -2,13 +2,26 @@
   <% messages.forEach((message)=>{%> <% if(locals.currentUser){ %> <%
   if(locals.currentUser.id === message.author.id){ %>
   <div class="message">
-    <div class="message-user"><%=message.text %></div>
+    <%if(message.isImage === true){%>
+      <div class="message-user"><img class="message-img"
+        src="https://res.cloudinary.com/dbejjbpof/image/upload/v1667679007/members-message-user/load-loading_lduxyy.gif"  data-src="<%=message.text%>" alt=""></div>
+      <%}else{%>
+        <div class="message-user"><%=message.text %></div>
+        <%}%>
     <div class="message-info">You</div>
     <div class="message-info"><%=message.time%></div>
+        
+    
   </div>
   <% }else{%>
   <div class="other">
-    <div class="message-another"><%=message.text %></div>
+    <%if(message.isImage === true){%>
+      <div class="message-another"><img class="message-img"
+        src="https://res.cloudinary.com/dbejjbpof/image/upload/v1667679007/members-message-user/load-loading_lduxyy.gif" data-src="<%=message.text%>" alt=""></div>
+      <%}else{%>
+        <div class="message-another"><%=message.text %></div>
+        <%}%>
+    
     <div class="message-info"><%=message.author.name %></div>
     <div class="message-info"><%=message.time%></div>
   </div>
@@ -20,23 +33,52 @@
   </div>
   <%} %> <% }) %>
 </div>
-<div className="message-input">
-  <%if(locals.currentUser){%>
-  <form action="/" method="POST">
-    <input type="text" name="message" id="" />
-    <% if(locals.currentUser){ %>
-    <input
-      type="hidden"
-      name="author"
-      id=""
-      value="<%=locals.currentUser.id%>"
-    />
-    <input type="hidden" name="guest" id="" value="<%=guest.id%>" />
-    <% } %>
+<div class="form-div">
+  
+  <div class="message-input">
+    <%if(locals.currentUser){%>
+    <form action="/" method="POST" name="text-form">
+      <input type="text" name="message" id="" />
+      <% if(locals.currentUser){ %>
+      <input
+        type="hidden"
+        name="author"
+        id=""
+        value="<%=locals.currentUser.id%>"
+      />
+      <input type="hidden" name="guest" id="" value="<%=guest.id%>" />
+      <% } %>
 
-    <button type="submit" id="submit-btn">Send</button>
-  </form>
-  <%}else{%>
-  <div>Log in to send a message</div>
-  <%}%>
+      
+    </form>
+    
+
+    <%}else{%>
+    <div>Log in to send a message</div>
+    <%}%>
+  </div>
+  <div>
+    <%if(locals.currentUser){%>
+      <form action="/message" method="POST" enctype="multipart/form-data" name="img-form">
+      <label class="image-label" for="image">
+        <input type="file" name="image" id="image">
+        <span class="img-upload"><img src="../images/imageUpload.png" alt=""></span>
+      </label>
+        <% if(locals.currentUser){ %>
+      <input
+        type="hidden"
+        name="author"
+        id=""
+        value="<%=locals.currentUser.id%>"
+      />
+      <input type="hidden" name="guest" id="" value="<%=guest.id%>" />
+      <% } %>
+
+        
+
+        </form>
+      <%}%>
+    </div>
+
+  <button id="submit-btn">Send</button>
 </div>

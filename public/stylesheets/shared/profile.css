@@ -1,8 +1,17 @@
+.profile-info-div {
+  max-width: 500px;
+  min-width: 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .profile-img {
-  margin: 15px;
+  margin-bottom: 15px;
   background-color: rgb(131, 38, 103);
-  padding: 10px;
+  padding: 5px;
   border-radius: 50%;
+  width: 100px;
 }
 
 .edit-form {
@@ -20,4 +29,17 @@
 
 .profile-info {
   color: white;
+  margin-bottom: 10px;
+}
+
+.img-upload-user {
+  text-align: center;
+}
+
+.img-upload-user > img {
+  background-color: rgb(189, 11, 135);
+  padding: 10px 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  width: 250px;
 }

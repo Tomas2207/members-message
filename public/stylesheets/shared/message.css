@@ -1,13 +1,15 @@
 #message-container {
-  width: 500px;
+  max-width: 500px;
+  min-width: 300px;
+  box-sizing: border-box;
   height: 600px;
   padding: 15px;
 
   border: 1px solid black;
   display: flex;
 
-  flex-direction: column;
-  overflow: auto;
+  flex-direction: column-reverse;
+  overflow-y: scroll;
   margin-bottom: 25px;
   background-color: rgb(41, 39, 39);
   border-radius: 5px;
@@ -54,4 +56,9 @@
 
 .message-info {
   color: white;
+}
+
+.message-img {
+  width: 100%;
+  height: 100%;
 }

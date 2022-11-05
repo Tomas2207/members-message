@@ -1,3 +1,9 @@
-<h2><%=chatroom[0].guest.name%></h2>
+<div class="chatroom-profile">
+    <span class="chatroom-img"><img src="<%=chatroom[0].guest.image%>" alt=""></span>
+    <h2><%=chatroom[0].guest.name%></h2>
+</div>
+
+<div id="updateDiv">
 <%- include('messageBoard.ejs', {messages: messages, guest: chatroom[0].guest})
 %>
+</div>

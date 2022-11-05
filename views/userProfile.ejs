@@ -1,16 +1,18 @@
 <h1>Profile</h1>
 <!-- <div><%=locals.currentUser.name %>  <%=locals.currentUser.lastName %></div> -->
-<img class="profile-img" src="../images/user.png" alt="" />
-<div class="profile-info">Username: <%=locals.currentUser.username %></div>
+<div class="profile-info-div">
+  <img class="profile-img" src="<%=locals.currentUser.image%>" alt="" />
+  <div class="profile-info">
+    <%=locals.currentUser.name %> <%=locals.currentUser.lastName %>
+  </div>
+  <div class="profile-info">Username: <%=locals.currentUser.username %></div>
 
-<span class="profile-info">Name: <%=locals.currentUser.name %></span>
-
-<div class="profile-info">Lastname: <%=locals.currentUser.lastName %></div>
-<button>
-  <a href="/profile/edit/<%=locals.currentUser.id %> "> Update</a>
-</button>
+  <button>
+    <a href="/profile/edit/<%=locals.currentUser.id %> "> Update</a>
+  </button>
+</div>
 <h3>Friends:</h3>
-<div id="message-container">
+<div id="chatroom-container">
   <%user.friends.forEach(friend=>{ %>
   <div class="friend-list"><%=friend.user.name %></div>
   <form action="/chatroom/<%=locals.currentUser.id%>?_method=PUT" method="POST">

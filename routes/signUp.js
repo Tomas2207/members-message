@@ -19,6 +19,8 @@ router.post('/', async (req, res, next) => {
       lastName: req.body.lastname,
       username: req.body.username,
       password: password,
+      image:
+        'https://res.cloudinary.com/dbejjbpof/image/upload/v1667643813/members-message-user/user_ox4lyn.png',
     });
 
     const newUser = await user.save();

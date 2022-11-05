@@ -1,8 +1,12 @@
 <header>
   <nav>
     <a href="/">Home</a>
+    <% if(!locals.currentUser){ %>
     <a href="/sign-up">Sign up</a>
     <a href="/log-in">Log in</a>
+    <% } %> <%if(locals.currentUser){ %>
+    <a href="/log-in/log-out">Log out</a>
     <a href="/profile/search">Search user</a>
+    <% } %>
   </nav>
 </header>
