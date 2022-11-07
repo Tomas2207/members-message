@@ -1,12 +1,21 @@
-<h2>Sign Up</h2>
+
 <form action="/sign-up" method="POST" class="form">
+  <h2>Sign Up</h2>
+  <div class="img-upload-icons">
+    <img src="../images/signup.png" alt="">
+  </div>
   <label for="name">Name:</label>
   <input type="text" name="name" id="" placeholder="Enter Name"/>
+  <div class="error-message"><%=error.name%> </div>
   <label for="lastname">Last Name:</label>
   <input type="text" name="lastname" id="" placeholder="Enter Last Name"/>
+  <div class="error-message"><%=error.lastname%> </div>
   <label for="username">Username:</label>
   <input type="text" name="username" id="" placeholder="Enter Username" />
+  <div class="error-message"><%=error.username%> </div>
+  <%console.log('errors', error.name) %> 
   <label for="password">Password:</label>
   <input type="password" name="password" id="" placeholder="Enter Password"/>
+  <div class="error-message"><%=error.password%> </div>
   <button type="submit">Sign Up</button>
 </form>

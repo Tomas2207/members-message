@@ -2,7 +2,8 @@
   max-width: 500px;
   min-width: 300px;
   box-sizing: border-box;
-  height: 600px;
+  height: 55vh;
+  max-height: 575px;
   padding: 15px;
 
   border: 1px solid black;
@@ -10,8 +11,33 @@
 
   flex-direction: column-reverse;
   overflow-y: scroll;
-  margin-bottom: 25px;
+  /* margin-bottom: 25px; */
   background-color: rgb(41, 39, 39);
+  border-radius: 5px;
+}
+
+#message-container::-webkit-scrollbar {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+#message-container::-webkit-scrollbar:vertical {
+  width: 15px;
+}
+
+#message-container::-webkit-scrollbar:horizontal {
+  height: 11px;
+}
+
+#message-container::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  border: 2px solid white; /* should match background, can't be transparent */
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+#message-container::-webkit-scrollbar-track {
+  background-color: rgb(189, 11, 135);
+
   border-radius: 5px;
 }
 

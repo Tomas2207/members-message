@@ -12,14 +12,19 @@ let observer = new IntersectionObserver((entries, observer) => {
 }, imageOptions);
 
 if (images.length > 0) {
-  for (let image of images) {
-    // image.onload = function () {
-    //   socket.emit('UpdateOnDatabase');
-    // };
+  let imgDiv = document.getElementById('clicked-img');
+  let insideimg = document.getElementById('inside-img');
 
-    // const newURL = image.getAttribute('data-src');
-    // image.src = newURL;
+  imgDiv.addEventListener('click', function () {
+    imgDiv.classList.remove('clicked-img');
+    insideimg.src = '';
+  });
+  for (let image of images) {
     observer.observe(image);
-    // console.log('img', image);
+
+    image.addEventListener('click', function (e) {
+      insideimg.src = e.target.src;
+      imgDiv.classList.add('clicked-img');
+    });
   }
 }

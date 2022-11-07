@@ -1,4 +1,5 @@
 <div id="message-container">
+  <img src="" alt="" id="clicked-img">
   <% messages.forEach((message)=>{%> <% if(locals.currentUser){ %> <%
   if(locals.currentUser.id === message.author.id){ %>
   <div class="message">
@@ -9,8 +10,6 @@
         <div class="message-user"><%=message.text %></div>
         <%}%>
     <div class="message-info">You</div>
-    <div class="message-info"><%=message.time%></div>
-        
     
   </div>
   <% }else{%>
@@ -23,13 +22,13 @@
         <%}%>
     
     <div class="message-info"><%=message.author.name %></div>
-    <div class="message-info"><%=message.time%></div>
+    
   </div>
   <%}%> <% }else{ %>
   <div class="other">
     <div class="message-another"><%=message.text %></div>
     <div class="message-info"><%=message.author.name %></div>
-    <div class="message-info"><%=message.time%></div>
+    
   </div>
   <%} %> <% }) %>
 </div>
@@ -38,7 +37,7 @@
   <div class="message-input">
     <%if(locals.currentUser){%>
     <form action="/" method="POST" name="text-form">
-      <input type="text" name="message" id="" />
+      <input type="text" name="message" id="" class="text-input" placeholder="Message" />
       <% if(locals.currentUser){ %>
       <input
         type="hidden"
@@ -73,12 +72,9 @@
       />
       <input type="hidden" name="guest" id="" value="<%=guest.id%>" />
       <% } %>
-
-        
-
         </form>
       <%}%>
     </div>
 
-  <button id="submit-btn">Send</button>
+  <button id="submit-btn"><img src="../images/send.png" alt=""></button>
 </div>

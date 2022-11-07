@@ -51,15 +51,28 @@ router.post('/', async (req, res) => {
   });
   try {
     const newMessage = await message.save();
+    let finalMessage = '';
 
-    const profile = await Chatroom.findOneAndUpdate(
-      { host: req.body.author },
-      { $push: { messages: { message: newMessage.id } } }
+    if (req.body.message.length > 25) {
+      finalMessage = req.body.message.substring(0, 25) + '...';
+    } else {
+      finalMessage = req.body.message;
+    }
+
+    await Chatroom.findOneAndUpdate(
+      { host: req.body.author, guest: req.body.guest },
+      {
+        $push: { messages: { message: newMessage.id } },
+        $set: { lastMessage: finalMessage },
+      }
     );
     // console.log('profile', profile);
-    await Profile.findOneAndUpdate(
-      { host: req.body.guest },
-      { $push: { messages: { message: newMessage.id } } }
+    await Chatroom.findOneAndUpdate(
+      { host: req.body.guest, guest: req.body.author },
+      {
+        $push: { messages: { message: newMessage.id } },
+        $set: { lastMessage: finalMessage },
+      }
     );
   } catch (err) {
     console.log('chatroom error', err);
@@ -93,14 +106,20 @@ router.post('/message', upload.single('image'), async (req, res) => {
 
     const newMessage = await message.save();
 
-    const profile = await Chatroom.findOneAndUpdate(
-      { host: req.body.author },
-      { $push: { messages: { message: newMessage.id } } }
+    await Chatroom.findOneAndUpdate(
+      { host: req.body.author, guest: req.body.guest },
+      {
+        $push: { messages: { message: newMessage.id } },
+        $set: { lastMessage: 'image' },
+      }
     );
     // console.log('profile', profile);
-    await Profile.findOneAndUpdate(
-      { host: req.body.guest },
-      { $push: { messages: { message: newMessage.id } } }
+    await Chatroom.findOneAndUpdate(
+      { host: req.body.guest, guest: req.body.author },
+      {
+        $push: { messages: { message: newMessage.id } },
+        $set: { lastMessage: 'image' },
+      }
     );
   } catch (error) {
     console.log(error);
@@ -157,16 +176,20 @@ router.put('/chatroom/:id', async (req, res) => {
     $and: [{ guest: req.body.guest }, { host: req.body.host }],
   });
   if (chatroomFind.length > 0) {
-    res.redirect('/');
+    res.redirect('/chatroom/' + req.body.guest);
   } else {
     const chatroom = new Chatroom({
       host: req.body.host,
       guest: req.body.guest,
+      lastMessage: '.',
     });
     const guestChatroom = new Chatroom({
       host: req.body.guest,
       guest: req.body.host,
+      lastMessage: '.',
     });
+
+    console.log(chatroom);
     try {
       const newChatroom = await chatroom.save();
       const newGuestroom = await guestChatroom.save();
@@ -179,7 +202,7 @@ router.put('/chatroom/:id', async (req, res) => {
         { _id: req.body.guest },
         { $push: { chatrooms: { chatroom: newGuestroom.id } } }
       );
-      res.redirect('/');
+      res.redirect('/chatroom/' + req.body.guest);
     } catch (error) {
       console.log(error);
       res.redirect('/');

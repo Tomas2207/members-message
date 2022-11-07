@@ -4,7 +4,7 @@ const passport = require('passport');
 
 router.get('/', (req, res) => {
   console.log(req.user);
-  res.render('logIn', { user: req.user });
+  res.render('logIn', { user: req.user, message: '' });
 });
 
 module.exports = router;

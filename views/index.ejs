@@ -14,11 +14,16 @@
     <a href="/chatroom/<%=chatroom.guest.id%>">
       <div class="chatroom">
         <div class="img-chatroom"><img src="<%=chatroom.guest.image%>" alt=""></div>
+        <div class="sub-chatroom">
+          <div><%=chatroom.guest.name %></div>
+        <div class="last-message"><%=chatroom.lastMessage%> </div>
+        </div>
         
-        <div><%=chatroom.guest.name %></div>
       </div>
+       
     </a>
      <% }) %> 
+     <a href="/profile/<%=locals.currentUser.id %> "><img src="../images/text.png" alt="" class="add-chatroom"></a>
   <% }else{ %>
   <div id="chatroom-container">
     <h2><a class="log-a" href="/sign-up">Sign Up</a> or <a class="log-a" href="/log-in">Log In</a> to view chatroooms</h2>

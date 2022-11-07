@@ -6,6 +6,7 @@ const upload = require('../utils/multer');
 
 router.get('/search', async (req, res) => {
   let filter = [];
+  let error = '';
   let exists = false;
   let profile = await Profile.findById(res.locals.currentUser.id)
     .populate('friends.user')
@@ -29,9 +30,15 @@ router.get('/search', async (req, res) => {
           users.splice(index, 1);
         }
       }
+      if (user.name === profile.name) {
+        const index = users.indexOf(user);
+        if (index > -1) {
+          users.splice(index, 1);
+        }
+      }
     });
 
-    res.render('userSearch', { users, profile });
+    res.render('userSearch', { users, profile, error });
   } catch (error) {
     console.log(error);
     res.redirect('/');

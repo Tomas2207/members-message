@@ -1,6 +1,7 @@
 .profile-info-div {
   max-width: 500px;
-  min-width: 320px;
+
+  min-width: 210px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -25,21 +26,41 @@
   font-size: 1.2em;
   font-weight: bold;
   margin: 10px 0;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 10px;
 }
 
 .profile-info {
   color: white;
   margin-bottom: 10px;
+  font-size: 1.1em;
 }
 
-.img-upload-user {
+.img-upload-user,
+.img-upload-icons {
   text-align: center;
+  display: flex;
+  justify-content: center;
 }
 
-.img-upload-user > img {
+.img-upload-user > img,
+.img-upload-icons > img {
   background-color: rgb(189, 11, 135);
   padding: 10px 10px;
   border-radius: 50%;
+  display: flex;
+}
+
+.img-upload-user {
   cursor: pointer;
+}
+
+.img-upload-user > img {
   width: 250px;
+}
+
+.img-upload-icons > img {
+  width: 90px;
 }

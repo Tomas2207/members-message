@@ -4,6 +4,10 @@
 </div>
 
 <div id="updateDiv">
-<%- include('messageBoard.ejs', {messages: messages, guest: chatroom[0].guest})
-%>
+    <div id="clicked-img">
+        <img id="inside-img" src="" alt="">
+    </div>
+    
+    <%- include('messageBoard.ejs', {messages: messages, guest: chatroom[0].guest})
+    %>
 </div>

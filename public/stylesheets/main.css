@@ -49,7 +49,7 @@ a {
 nav {
   display: flex;
   gap: 12px;
-  font-size: 1.2em;
+  font-size: 1.1em;
   margin-bottom: 10px;
 }
 
@@ -68,7 +68,7 @@ nav > a:hover {
   flex-direction: column;
   max-width: 290px;
   background-color: rgba(41, 39, 39, 0.952);
-  padding: 50px 25px;
+  padding: 10px 25px 50px 25px;
   border-radius: 5px;
   position: relative;
 }
@@ -83,7 +83,8 @@ nav > a:hover {
 }
 
 .form > input,
-.image-label > input {
+.image-label > input,
+.text-input {
   border-radius: 5px;
   border: none;
   outline: none;
@@ -91,33 +92,41 @@ nav > a:hover {
   background-color: rgba(199, 118, 175, 0.767);
   color: white;
   padding: 0.5rem 1.5rem;
-  margin-bottom: 15px;
+  margin-bottom: 5px;
 }
 
-/* .form > label {
-  display: none;
-} */
+.text-input {
+  margin-top: 5px;
+}
 
-.form > input::placeholder {
+.form > input::placeholder,
+.text-input::placeholder {
   color: white;
 }
 
 input {
   height: 25px;
-  margin-bottom: 10px;
+  margin-top: 10px;
 }
 
 button {
-  height: 35px;
+  height: 40px;
   background-color: rgb(131, 38, 103);
   border: none;
   border-radius: 5px;
   color: white;
   font-weight: bold;
   font-size: 1.1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 button:hover {
   background-color: rgb(158, 41, 123);
   cursor: pointer;
+}
+
+.error-message {
+  color: red;
 }

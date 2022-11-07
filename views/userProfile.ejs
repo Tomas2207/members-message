@@ -1,6 +1,7 @@
-<h1>Profile</h1>
+
 <!-- <div><%=locals.currentUser.name %>  <%=locals.currentUser.lastName %></div> -->
-<div class="profile-info-div">
+<div class="profile-info-div form">
+  <h1>Profile</h1>
   <img class="profile-img" src="<%=locals.currentUser.image%>" alt="" />
   <div class="profile-info">
     <%=locals.currentUser.name %> <%=locals.currentUser.lastName %>
@@ -8,13 +9,17 @@
   <div class="profile-info">Username: <%=locals.currentUser.username %></div>
 
   <button>
-    <a href="/profile/edit/<%=locals.currentUser.id %> "> Update</a>
+    <a href="/profile/edit/<%=locals.currentUser.id %> ">Edit</a>
   </button>
 </div>
 <h3>Friends:</h3>
 <div id="chatroom-container">
   <%user.friends.forEach(friend=>{ %>
-  <div class="friend-list"><%=friend.user.name %></div>
+    
+  <div class="friend-list">
+    <span class="img-chatroom"><img src="<%=friend.user.image%>" alt=""></span>
+    <span><%=friend.user.name %></span>
+  </div>
   <form action="/chatroom/<%=locals.currentUser.id%>?_method=PUT" method="POST">
     <input type="hidden" name="guest" id="" value="<%=friend.user.id%>" />
     <input type="hidden" name="host" id="" value="<%=locals.currentUser.id%>" />

@@ -1,12 +1,13 @@
-<h1>Profile</h1>
+
 <!-- <div><%=locals.currentUser.name %>  <%=locals.currentUser.lastName %></div> -->
 
-<div>Username: <%=locals.currentUser.username %></div>
+
 <form
   class="form"
   action="/profile/<%=user.id %>?_method=PUT"
   method="POST" enctype="multipart/form-data"
 >
+<h2>Profile</h2>
   <label class="image-label" for="image">
     <input type="file" name="image" id="image" class="img-upload">
     <div class="img-upload-user">

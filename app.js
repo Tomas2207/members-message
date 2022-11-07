@@ -70,7 +70,6 @@ passport.use(
         return done(err);
       }
       if (!user) {
-        console.log('wrong');
         return done(null, false, { message: 'Incorrect username' });
       }
       bcrypt.compare(password, user.password, (err, res) => {
@@ -104,8 +103,14 @@ app.post(
   '/log-in',
   passport.authenticate('local', {
     successRedirect: '/',
-    failureRedirect: '/log-in',
-  })
+    failWithError: true,
+  }),
+  function (err, req, res, next) {
+    return res.render('logIn', {
+      user: req.user,
+      message: 'Username or Password is incorrect',
+    });
+  }
 );
 
 app.get('/log-in/log-out', (req, res, next) => {

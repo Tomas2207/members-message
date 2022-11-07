@@ -2,8 +2,13 @@
 <h2><%=currentUser.name%></h2>
 <a href="log-in/log-out">Log out</a>
 <% } else {%>
-<h2>Log In</h2>
+
 <form action="/log-in" method="POST" class="form">
+  <h2>Log In</h2>
+  <div class="img-upload-icons">
+    <img src="../images/login.png" alt="">
+  </div>
+  <div class="error-message"><%=message%></div>
   <label for="username">Username:</label >
   <input type="text" name="username" id="" placeholder='Enter Username'/>
   <label for="password">Password:</label>
