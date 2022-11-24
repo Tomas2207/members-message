@@ -1,7 +1,8 @@
 #chatroom-container {
-  position: relative;
+  /* position: relative; */
   height: 70vh;
   max-height: 575px;
+
   padding: 15px;
   max-width: 500px;
   min-width: 300px;
@@ -179,8 +180,10 @@
   position: relative;
   max-width: 500px;
   min-width: 300px;
-  height: 70vh;
-  max-height: 600px;
+  /* height: 70vh;
+  max-height: 600px; */
+  height: 575px;
+  display: initial;
 }
 
 #inside-img {
@@ -192,15 +195,23 @@
 .add-chatroom {
   padding: 10px;
   width: 50px;
+  height: 50px;
   border-radius: 50%;
-  position: absolute;
-  right: 10px;
-  bottom: 10px;
-  background-color: rgb(131, 38, 103);
-  transition: 0.3s ease-in-out;
+  /* position: -webkit-sticky;
+  position: sticky;
+  top: 0; */
+  background-color: black;
+  transition: 0.3ss ease-in-out;
+  border: 5px solid rgb(41, 39, 39);
+}
+
+.add-link {
+  position: sticky;
+  top: 0;
 }
 
 .add-chatroom:hover {
-  background-color: rgb(189, 11, 135);
+  background-color: rgb(41, 39, 39);
+  border: 5px solid black;
   cursor: pointer;
 }
